@@ -31,17 +31,23 @@ function Peers(options) {
     peers.toJSON = toJSON
     peers.createStream = createStream
     peers.close = close
+    peers.join = join
 
     model.on("synced", onsynched)
     model.on("update", onupdate)
 
     setTimeout(heartbeat, interval)
 
-    process.nextTick(function () {
-        model.set(id, meta)
-    })
-
     return peers
+
+    function join(_meta) {
+        if (_meta) {
+            meta = _meta
+            id = meta.id
+        }
+
+        model.set(id, meta)
+    }
 
     function toJSON() {
         return model.toJSON()

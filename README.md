@@ -49,6 +49,9 @@ var stream1 = p1.createStream()
 
 stream1.pipe(stream2).pipe(stream1)
 
+p1.join()
+p2.join()
+
 setTimeout(function () {
     console.log("closing p2")
     p2.close()
