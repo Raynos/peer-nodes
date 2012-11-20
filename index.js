@@ -1,6 +1,7 @@
 var ExpiryModel = require("expiry-model")
     , uuid = require("node-uuid")
     , EventEmitter = require("events").EventEmitter
+    , extend = require("xtend")
 
 module.exports = Peers
 
@@ -42,7 +43,7 @@ function Peers(options) {
 
     function join(_meta) {
         if (_meta) {
-            meta = _meta
+            extend(meta, _meta)
             id = meta.id
         }
 
