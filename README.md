@@ -4,7 +4,7 @@ A replicated list of peers
 
 ## Example
 
-```
+```js
 var Peers = require("peer-nodes")
 
 var p1 = Peers({
