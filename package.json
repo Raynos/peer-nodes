@@ -1,0 +1,36 @@
+{
+  "name": "peer-nodes",
+  "version": "0.1.0",
+  "description": "A replicated list of peers",
+  "keywords": [],
+  "author": "Raynos <raynos2@gmail.com>",
+  "repository": "git://github.com/Raynos/peer-nodes.git",
+  "main": "index",
+  "homepage": "https://github.com/Raynos/peer-nodes",
+  "contributors": [
+    {
+      "name": "Jake Verbaten"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/Raynos/peer-nodes/issues",
+    "email": "raynos2@gmail.com"
+  },
+  "dependencies": {
+    "expiry-model": "~0.1.0",
+    "node-uuid": "~1.4.0"
+  },
+  "devDependencies": {
+    "tap": "~0.3.1",
+    "node-uuid": "~1.4.0"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/Raynos/peer-nodes/raw/master/LICENSE"
+    }
+  ],
+  "scripts": {
+    "test": "tap --stderr --tap ./test"
+  }
+}
