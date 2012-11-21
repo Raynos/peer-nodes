@@ -17,45 +17,25 @@ function Peers(options) {
     if (typeof options === "string") {
         options = { id: options }
     }
-
-    var model = new ExpiryModel()
-        , peers = new EventEmitter()
+    var peers = new ExpiryModel()
         , interval = options.interval || 5000
         , timeout = options.timeout || 1000 * 60
-        , id = options.id || uuid()
-        , meta = options.meta || {}
         , heartbeats = {}
         , closed
+        , id
 
-    meta.id = id
-
-    peers.toJSON = toJSON
-    peers.createStream = createStream
     peers.close = close
     peers.join = join
 
-    model.on("synced", onsynched)
-    model.on("update", onupdate)
+    peers.on("update", onupdate)
 
     setTimeout(heartbeat, interval)
 
     return peers
 
-    function join(_meta) {
-        if (_meta) {
-            extend(meta, _meta)
-            id = meta.id
-        }
-
-        model.set(id, meta)
-    }
-
-    function toJSON() {
-        return model.toJSON()
-    }
-
-    function createStream() {
-        return model.createStream()
+    function join(meta) {
+        id = meta.id
+        peers.set(id, meta)
     }
 
     function onsynched() {
@@ -82,7 +62,7 @@ function Peers(options) {
         closed = true
 
         Object.keys(heartbeats).forEach(function (key) {
-            var value = model.get(key)
+            var value = peers.get(key)
 
             ;delete heartbeats[key]
             peers.emit("leave", value)
@@ -95,9 +75,10 @@ function Peers(options) {
         }
 
         var now = Date.now()
+            , meta = peers.get(id)
 
         meta._heartbeat = now
-        model.set(id, meta)
+        peers.set(id, meta)
 
         Object.keys(heartbeats).forEach(function (key) {
             // console.log("heartbeats", heartbeats, id)
@@ -106,7 +87,7 @@ function Peers(options) {
             if (time < now - timeout) {
                 delete heartbeats[key]
 
-                peers.emit("leave", model.get(key))
+                peers.emit("leave", peers.get(key))
             }
         })
 

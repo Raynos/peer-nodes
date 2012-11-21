@@ -1,16 +1,11 @@
 var Peers = require("..")
 
 var p1 = Peers({
-        id: "peer1 id"
-        , interval: 100
+        interval: 100
         , timeout: 600
-        , meta: {
-            "arbitary meta data": "here"
-        }
     })
     , p2 = Peers({
-        id: "peer2 id"
-        , interval: 100
+        interval: 100
         , timeout: 600
     })
 
@@ -42,8 +37,13 @@ var stream1 = p1.createStream()
 
 stream1.pipe(stream2).pipe(stream1)
 
-p1.join()
-p2.join()
+p1.join({
+    id: "peer1 id"
+    , "arbitary meta data": "here"
+})
+p2.join({
+    id: "peer2 id"
+})
 
 setTimeout(function () {
     console.log("closing p2")
