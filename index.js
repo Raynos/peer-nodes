@@ -23,19 +23,22 @@ function Peers(options) {
         , heartbeats = {}
         , closed
         , id
+        , timer
 
     peers.close = close
     peers.join = join
 
     peers.on("update", onupdate)
 
-    setTimeout(heartbeat, interval)
-
     return peers
 
     function join(meta) {
         id = meta.id
         peers.set(id, meta)
+
+        if (!timer) {
+            timer = setTimeout(heartbeat, interval)
+        }
     }
 
     function onsynched() {
@@ -67,6 +70,10 @@ function Peers(options) {
             ;delete heartbeats[key]
             peers.emit("leave", value)
         })
+
+        if (timer) {
+            clearTimeout(timer)
+        }
     }
 
     function heartbeat() {
